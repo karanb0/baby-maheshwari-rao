@@ -19,7 +19,7 @@ export default function AdminPage() {
     // Set guest URL based on current location
     if (typeof window !== 'undefined') {
       const baseUrl = window.location.origin;
-      setGuestUrl(`${baseUrl}/guest`);
+      setGuestUrl(`${baseUrl}`);
     }
   }, []);
 

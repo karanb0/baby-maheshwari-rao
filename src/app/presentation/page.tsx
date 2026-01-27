@@ -15,7 +15,7 @@ export default function PresentationPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const baseUrl = window.location.origin;
-      setGuestUrl(`${baseUrl}/guest`);
+      setGuestUrl(`${baseUrl}`);
     }
   }, []);
 
