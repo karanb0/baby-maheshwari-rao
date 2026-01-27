@@ -61,22 +61,20 @@ export function BabyTurtle({ className = '', delay = 0 }: { className?: string; 
         ease: 'easeInOut',
       }}
     >
-      <svg viewBox="0 0 120 80" className="w-20 h-14 md:w-28 md:h-20">
-        <ellipse cx="60" cy="45" rx="35" ry="25" fill="#7ED4AD" />
-        <ellipse cx="60" cy="45" rx="28" ry="18" fill="#5CB88A" />
-        <path d="M35,45 L28,50 L25,45 L32,42 Z" fill="#7ED4AD" />
-        <path d="M85,45 L92,50 L95,45 L88,42 Z" fill="#7ED4AD" />
-        <path d="M45,65 L40,75 L50,72 Z" fill="#7ED4AD" />
-        <path d="M75,65 L80,75 L70,72 Z" fill="#7ED4AD" />
-        <circle cx="25" cy="35" r="12" fill="#7ED4AD" />
-        <circle cx="22" cy="33" r="3" fill="#333" />
-        <path d="M20,40 Q25,42 30,40" fill="none" stroke="#5CB88A" strokeWidth="1.5" />
-      </svg>
+      <img 
+        src="/baby-turtle.svg" 
+        alt="Baby Turtle" 
+        className='w-36 h-48 md:w-32 md:h-48' 
+      />
     </motion.div>
   );
 }
 
-export function BabyJellyfish({ className = '', delay = 0 }: { className?: string; delay?: number }) {
+export function BabyJellyfish({ className = '', delay = 0, size = 'default' }: { className?: string; delay?: number; size?: 'default' | 'large' }) {
+  const sizeClasses = size === 'large' 
+    ? 'w-30 h-40 md:w-32 md:h-48' 
+    : 'w-12 h-18 md:w-16 md:h-24';
+  
   return (
     <motion.div
       className={`absolute pointer-events-none ${className}`}
@@ -91,37 +89,35 @@ export function BabyJellyfish({ className = '', delay = 0 }: { className?: strin
         ease: 'easeInOut',
       }}
     >
-      <svg viewBox="0 0 80 120" className="w-12 h-18 md:w-16 md:h-24">
-        <ellipse cx="40" cy="30" rx="30" ry="25" fill="#C8A2F8" fillOpacity="0.8" />
-        <ellipse cx="40" cy="35" rx="20" ry="15" fill="#E0C8FF" fillOpacity="0.5" />
-        <circle cx="30" cy="28" r="4" fill="#333" />
-        <circle cx="50" cy="28" r="4" fill="#333" />
-        <path d="M35,38 Q40,42 45,38" fill="none" stroke="#9B6DD4" strokeWidth="2" />
-        {[...Array(5)].map((_, i) => (
-          <motion.path
-            key={i}
-            d={`M${20 + i * 10},50 Q${18 + i * 10},80 ${20 + i * 10},110`}
-            fill="none"
-            stroke="#C8A2F8"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeOpacity="0.7"
-            animate={{
-              d: [
-                `M${20 + i * 10},50 Q${15 + i * 10},80 ${20 + i * 10},110`,
-                `M${20 + i * 10},50 Q${25 + i * 10},80 ${20 + i * 10},110`,
-                `M${20 + i * 10},50 Q${15 + i * 10},80 ${20 + i * 10},110`,
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.15 }}
-          />
-        ))}
-      </svg>
+      <div className={sizeClasses}>
+        <img 
+          src="/baby-jellyfish.svg" 
+          alt="Baby Jellyfish" 
+          className="w-full h-full object-contain"
+        />
+      </div>
     </motion.div>
   );
 }
 
 export function BabyFish({ className = '', delay = 0, color = '#FFB347' }: { className?: string; delay?: number; color?: string }) {
+  const [svgContent, setSvgContent] = useState<string>('');
+
+  useEffect(() => {
+    fetch('/baby-fish.svg')
+      .then(res => res.text())
+      .then(text => {
+        // Replace currentColor with the actual color value
+        const processedSvg = text.replace(/currentColor/g, color);
+        setSvgContent(processedSvg);
+      })
+      .catch(err => console.error('Failed to load baby-fish.svg:', err));
+  }, [color]);
+
+  if (!svgContent) {
+    return null;
+  }
+
   return (
     <motion.div
       className={`absolute pointer-events-none ${className}`}
@@ -136,14 +132,34 @@ export function BabyFish({ className = '', delay = 0, color = '#FFB347' }: { cla
         ease: 'easeInOut',
       }}
     >
-      <svg viewBox="0 0 80 50" className="w-12 h-8 md:w-16 md:h-10">
-        <ellipse cx="35" cy="25" rx="25" ry="15" fill={color} />
-        <path d="M60,25 L75,10 L75,40 Z" fill={color} />
-        <circle cx="22" cy="22" r="5" fill="white" />
-        <circle cx="23" cy="23" r="2.5" fill="#333" />
-        <path d="M35,10 Q40,5 45,12" fill="none" stroke={color} strokeWidth="4" />
-        <path d="M18,30 Q25,33 30,30" fill="none" stroke="#333" strokeWidth="1" />
-      </svg>
+      <div 
+        className="w-12 h-8 md:w-16 md:h-10"
+        dangerouslySetInnerHTML={{ __html: svgContent }}
+      />
+    </motion.div>
+  );
+}
+
+export function BabySeahorse({ className = '', delay = 0 }: { className?: string; delay?: number }) {
+  return (
+    <motion.div
+      className={`absolute pointer-events-none pt-5 ${className}`}
+      animate={{
+        x: [0, 20, 0],
+        y: [0, -10, 0],
+      }}
+      transition={{
+        duration: 4,
+        repeat: Infinity,
+        delay,
+        ease: 'easeInOut',
+      }}
+    >
+      <img 
+        src="/baby-seahorse.svg" 
+        alt="Baby Seahorse" 
+        className='w-24 h-36 md:w-32 md:h-48' 
+      />
     </motion.div>
   );
 }
@@ -201,29 +217,32 @@ export function Bubbles({ count = 15 }: { count?: number }) {
   );
 }
 
+
+
 export function Seaweed({ className = '' }: { className?: string }) {
   return (
-    <motion.div className={`absolute pointer-events-none ${className}`}>
-      <svg viewBox="0 0 40 150" className="w-10 h-36 md:w-14 md:h-48">
-        {[0, 15, 30].map((offset, i) => (
-          <motion.path
-            key={i}
-            d={`M${10 + offset},150 Q${5 + offset},100 ${15 + offset},70 Q${5 + offset},40 ${10 + offset},0`}
-            fill="none"
-            stroke={i === 1 ? '#2D8B5F' : '#3AAE76'}
-            strokeWidth="8"
-            strokeLinecap="round"
-            animate={{
-              d: [
-                `M${10 + offset},150 Q${5 + offset},100 ${15 + offset},70 Q${5 + offset},40 ${10 + offset},0`,
-                `M${10 + offset},150 Q${15 + offset},100 ${5 + offset},70 Q${15 + offset},40 ${10 + offset},0`,
-                `M${10 + offset},150 Q${5 + offset},100 ${15 + offset},70 Q${5 + offset},40 ${10 + offset},0`,
-              ],
-            }}
-            transition={{ duration: 4, repeat: Infinity, delay: i * 0.3, ease: 'easeInOut' }}
-          />
-        ))}
-      </svg>
+    <motion.div className={`absolute pointer-events-none bottom-0 ${className}`}>
+      <div className="w-40 h-96 md:w-56 md:h-[28rem]">
+        <img 
+          src="/seaweed.svg" 
+          alt="Seaweed" 
+          className="w-full h-full object-contain object-bottom"
+        />
+      </div>
+    </motion.div>
+  );
+}
+
+export function Seaweed2({ className = '' }: { className?: string }) {
+  return (
+    <motion.div className={`absolute pointer-events-none bottom-0 ${className}`}>
+      <div className="w-40 h-96 md:w-56 md:h-[28rem]">
+        <img 
+          src="/seaweed2.svg" 
+          alt="Seaweed2" 
+          className="w-full h-full object-contain object-bottom"
+        />
+      </div>
     </motion.div>
   );
 }
@@ -245,18 +264,16 @@ export function SeaBackground() {
       <Bubbles count={20} />
       
       {/* Sea creatures scattered around */}
-      <BabyOctopus className="bottom-20 left-10" delay={0} />
-      <BabyTurtle className="bottom-16 right-20" delay={1} />
-      <BabyJellyfish className="top-20 right-10" delay={0.5} />
-      <BabyJellyfish className="top-40 left-20" delay={2} />
-      <BabyFish className="top-1/3 left-1/4" delay={0.3} color="#FFB347" />
+      <BabyTurtle className="top-40 left-10" delay={1}  />
+      <BabyJellyfish className="top-20 right-10" delay={0.5} size="large" />
+      <BabySeahorse className="top-1/2 right-10" delay={0.8} />
+      <BabyFish className="top-40 left-1/4" delay={0.3} color="#FFB347" />
       <BabyFish className="top-1/2 right-1/3" delay={1.5} color="#FF6B9D" />
       <BabyFish className="bottom-1/3 left-1/3" delay={2.5} color="#87CEEB" />
       
       {/* Seaweed */}
-      <Seaweed className="bottom-0 left-5" />
-      <Seaweed className="bottom-0 right-10" />
-      <Seaweed className="bottom-0 left-1/3" />
+      <Seaweed className="left-5" />
+      <Seaweed2 className="right-10" />
     </div>
   );
 }

@@ -109,14 +109,7 @@ export default function GuestPage() {
             animate={{ scale: 1, opacity: 1 }}
             className="text-center"
           >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-8xl mb-6"
-            >
-              🐙
-            </motion.div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 pt-20">
               Waiting for the game to start...
             </h1>
             <p className="text-xl text-white/80">
@@ -124,7 +117,7 @@ export default function GuestPage() {
             </p>
             <motion.div
               className="mt-8 flex gap-4 justify-center"
-              animate={{ opacity: [0.5, 1, 0.5] }}
+              animate={{ y: [0, -10, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <span className="text-4xl">🦀</span>
