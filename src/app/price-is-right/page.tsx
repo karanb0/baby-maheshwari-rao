@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { SeaBackground } from '@/components/SeaCreatures';
 
@@ -78,12 +77,11 @@ export default function PriceIsRightPage() {
                 {item.description}
               </p>
               <div className="relative w-full rounded-2xl overflow-hidden bg-white/15 backdrop-blur-sm border-2 border-white/30 shadow-xl aspect-[4/3] max-h-[70vh]">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={item.src}
                   alt={item.title}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 512px"
+                  className="w-full h-full object-contain p-2"
                 />
               </div>
             </section>
