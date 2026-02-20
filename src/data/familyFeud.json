@@ -1,6 +1,20 @@
 {
   "categories": [
     {
+      "id": "example",
+      "title": "What food do you eat with your hands?",
+      "answers": [
+        { "text": "Roti / Subji", "points": 40 },
+        { "text": "Pizza", "points": 30 },
+        { "text": "Burger / Sandwich", "points": 25 },
+        { "text": "Tacos", "points": 20 },
+        { "text": "French Fries", "points": 15 },
+        { "text": "Burritos", "points": 10 },
+        { "text": "Popcorn", "points": 5 },
+        { "text": "Rice", "points": 3 }
+      ]
+    },
+    {
       "id": "diaper-bag-items",
       "title": "Items in a diaper bag",
       "answers": [
