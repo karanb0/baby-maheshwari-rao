@@ -1,59 +1,73 @@
 {
   "categories": [
     {
-      "id": "newborn-essentials",
-      "title": "Name something you need for a newborn",
+      "id": "diaper-bag-items",
+      "title": "Items in a diaper bag",
       "answers": [
         { "text": "Diapers", "points": 40 },
-        { "text": "Bottles", "points": 30 },
-        { "text": "Crib", "points": 25 },
-        { "text": "Clothes", "points": 20 },
-        { "text": "Wipes", "points": 15 },
-        { "text": "Car Seat", "points": 10 },
-        { "text": "Blankets", "points": 5 },
-        { "text": "Pacifier", "points": 3 }
+        { "text": "Wipes", "points": 30 },
+        { "text": "Spare Clothes / Extra Outfit", "points": 25 },
+        { "text": "Changing Pad", "points": 20 },
+        { "text": "Rash Cream / Diaper Cream", "points": 15 },
+        { "text": "Bottles / Milk / Formula", "points": 10 },
+        { "text": "Pacifier", "points": 5 },
+        { "text": "Burp Cloth", "points": 3 }
       ]
     },
     {
-      "id": "baby-cries",
-      "title": "Name a reason a baby cries",
+      "id": "never-enough-of",
+      "title": "What do new parents never have enough of",
       "answers": [
-        { "text": "Hungry", "points": 40 },
-        { "text": "Dirty Diaper", "points": 30 },
-        { "text": "Tired", "points": 25 },
-        { "text": "Wants to be Held", "points": 20 },
-        { "text": "Teething", "points": 15 },
-        { "text": "Too Hot / Cold", "points": 10 },
-        { "text": "Gassy", "points": 5 },
-        { "text": "Bored", "points": 3 }
+        { "text": "Sleep / Rest", "points": 40 },
+        { "text": "Time", "points": 30 },
+        { "text": "Food", "points": 25 },
+        { "text": "Help", "points": 20 },
+        { "text": "Pictures & Videos of Baby", "points": 15 },
+        { "text": "Money", "points": 10 },
+        { "text": "Wipes", "points": 5 },
+        { "text": "Diapers", "points": 3 }
       ]
     },
     {
-      "id": "first-year",
-      "title": "Name a milestone in a baby's first year",
+      "id": "stroller-brands",
+      "title": "Name a stroller brand",
       "answers": [
-        { "text": "First Steps", "points": 40 },
-        { "text": "First Words", "points": 30 },
-        { "text": "First Tooth", "points": 25 },
-        { "text": "Crawling", "points": 20 },
-        { "text": "Sleeping Through the Night", "points": 15 },
-        { "text": "Sitting Up", "points": 10 },
-        { "text": "Solid Foods", "points": 5 },
-        { "text": "First Smile", "points": 3 }
+        { "text": "Uppababy", "points": 40 },
+        { "text": "Nuna", "points": 30 },
+        { "text": "Bugaboo", "points": 25 },
+        { "text": "Doona", "points": 20 },
+        { "text": "Joolz", "points": 15 },
+        { "text": "Yoyo", "points": 10 },
+        { "text": "Graco", "points": 5 },
+        { "text": "Joie", "points": 3 }
       ]
     },
     {
-      "id": "parent-sayings",
-      "title": "Name something new parents always say",
+      "id": "reasons-baby-cries",
+      "title": "Reasons a baby might cry",
       "answers": [
-        { "text": "I'm So Tired", "points": 40 },
-        { "text": "They Grow So Fast", "points": 30 },
-        { "text": "Is The Baby Breathing?", "points": 25 },
-        { "text": "Whose Turn Is It?", "points": 20 },
-        { "text": "We Need More Diapers", "points": 15 },
-        { "text": "Shh, The Baby Is Sleeping", "points": 10 },
-        { "text": "Where's The Pacifier?", "points": 5 },
-        { "text": "I Love You So Much", "points": 3 }
+        { "text": "Sleepy / Tired / Overtired", "points": 40 },
+        { "text": "Hungry", "points": 30 },
+        { "text": "Gas", "points": 25 },
+        { "text": "Wants Cuddles / Attention", "points": 20 },
+        { "text": "Dirty Diaper", "points": 15 },
+        { "text": "Undertired", "points": 10 },
+        { "text": "Colic", "points": 5 },
+        { "text": "Uncomfortable", "points": 3 }
+      ]
+    },
+    {
+      "id": "entertain-a-baby",
+      "title": "Things you do to entertain a baby",
+      "answers": [
+        { "text": "Sing", "points": 40 },
+        { "text": "Read / Story", "points": 30 },
+        { "text": "Dance", "points": 25 },
+        { "text": "Make Faces / Peekaboo", "points": 20 },
+        { "text": "Make Silly Noises", "points": 15 },
+        { "text": "Play with Toys", "points": 10 },
+        { "text": "Physical Play", "points": 5 },
+        { "text": "Talk / Narrate", "points": 3 }
       ]
     }
   ]
