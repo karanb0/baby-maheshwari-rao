@@ -1,0 +1,60 @@
+{
+  "categories": [
+    {
+      "id": "newborn-essentials",
+      "title": "Name something you need for a newborn",
+      "answers": [
+        { "text": "Diapers", "points": 40 },
+        { "text": "Bottles", "points": 30 },
+        { "text": "Crib", "points": 25 },
+        { "text": "Clothes", "points": 20 },
+        { "text": "Wipes", "points": 15 },
+        { "text": "Car Seat", "points": 10 },
+        { "text": "Blankets", "points": 5 },
+        { "text": "Pacifier", "points": 3 }
+      ]
+    },
+    {
+      "id": "baby-cries",
+      "title": "Name a reason a baby cries",
+      "answers": [
+        { "text": "Hungry", "points": 40 },
+        { "text": "Dirty Diaper", "points": 30 },
+        { "text": "Tired", "points": 25 },
+        { "text": "Wants to be Held", "points": 20 },
+        { "text": "Teething", "points": 15 },
+        { "text": "Too Hot / Cold", "points": 10 },
+        { "text": "Gassy", "points": 5 },
+        { "text": "Bored", "points": 3 }
+      ]
+    },
+    {
+      "id": "first-year",
+      "title": "Name a milestone in a baby's first year",
+      "answers": [
+        { "text": "First Steps", "points": 40 },
+        { "text": "First Words", "points": 30 },
+        { "text": "First Tooth", "points": 25 },
+        { "text": "Crawling", "points": 20 },
+        { "text": "Sleeping Through the Night", "points": 15 },
+        { "text": "Sitting Up", "points": 10 },
+        { "text": "Solid Foods", "points": 5 },
+        { "text": "First Smile", "points": 3 }
+      ]
+    },
+    {
+      "id": "parent-sayings",
+      "title": "Name something new parents always say",
+      "answers": [
+        { "text": "I'm So Tired", "points": 40 },
+        { "text": "They Grow So Fast", "points": 30 },
+        { "text": "Is The Baby Breathing?", "points": 25 },
+        { "text": "Whose Turn Is It?", "points": 20 },
+        { "text": "We Need More Diapers", "points": 15 },
+        { "text": "Shh, The Baby Is Sleeping", "points": 10 },
+        { "text": "Where's The Pacifier?", "points": 5 },
+        { "text": "I Love You So Much", "points": 3 }
+      ]
+    }
+  ]
+}
