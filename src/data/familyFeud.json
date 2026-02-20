@@ -38,8 +38,8 @@
         { "text": "Doona", "points": 20 },
         { "text": "Joolz", "points": 15 },
         { "text": "Yoyo", "points": 10 },
-        { "text": "Graco", "points": 5 },
-        { "text": "Joie", "points": 3 }
+        { "text": "Cybex", "points": 5 },
+        { "text": "Graco", "points": 3 }
       ]
     },
     {
@@ -51,8 +51,8 @@
         { "text": "Gas", "points": 25 },
         { "text": "Wants Cuddles / Attention", "points": 20 },
         { "text": "Dirty Diaper", "points": 15 },
-        { "text": "Undertired", "points": 10 },
-        { "text": "Colic", "points": 5 },
+        { "text": "Colic", "points": 10 },
+        { "text": "Undertired", "points": 5 },
         { "text": "Uncomfortable", "points": 3 }
       ]
     },
