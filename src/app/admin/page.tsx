@@ -144,14 +144,16 @@ export default function AdminPage() {
   };
 
   // ── Feud handlers ──
-  const handleRevealAnswer = (categoryId: string, answerIndex: number) => {
-    updateFeud('revealAnswer', { categoryId, answerIndex });
+  const handleRevealAnswer = (categoryId: string, answerIndex: number, awardPoints = true) => {
+    updateFeud('revealAnswer', { categoryId, answerIndex, awardPoints });
   };
   const handleMarkWrong = () => updateFeud('markWrong');
   const handleSwitchTeam = () => updateFeud('switchTeam');
   const handleSetCategory = (index: number) => updateFeud('setCategory', { index });
   const handleSaveTeamNames = () => updateFeud('setTeamNames', { name1: teamName1, name2: teamName2 });
   const handleResetStrikes = () => updateFeud('resetStrikes');
+  const handleToggleStealMode = () => updateFeud('toggleStealMode');
+  const handleBankRound = () => updateFeud('bankRound');
   const handleResetFeud = () => { if (confirm('Reset Family Feud?')) updateFeud('resetFeud'); };
 
   // ── Loading ──
@@ -277,6 +279,8 @@ export default function AdminPage() {
                 handleMarkWrong={handleMarkWrong}
                 handleSwitchTeam={handleSwitchTeam}
                 handleResetStrikes={handleResetStrikes}
+                handleToggleStealMode={handleToggleStealMode}
+                handleBankRound={handleBankRound}
                 handleResetFeud={handleResetFeud}
               />
             </motion.div>
@@ -445,10 +449,12 @@ interface FeudTabProps {
   setTeamName2: (v: string) => void;
   handleSaveTeamNames: () => void;
   handleSetCategory: (index: number) => void;
-  handleRevealAnswer: (categoryId: string, answerIndex: number) => void;
+  handleRevealAnswer: (categoryId: string, answerIndex: number, awardPoints?: boolean) => void;
   handleMarkWrong: () => void;
   handleSwitchTeam: () => void;
   handleResetStrikes: () => void;
+  handleToggleStealMode: () => void;
+  handleBankRound: () => void;
   handleResetFeud: () => void;
 }
 
@@ -456,7 +462,8 @@ function FeudTab({
   feudState, currentCategory, revealedForCategory,
   teamName1, teamName2, setTeamName1, setTeamName2,
   handleSaveTeamNames, handleSetCategory, handleRevealAnswer,
-  handleMarkWrong, handleSwitchTeam, handleResetStrikes, handleResetFeud,
+  handleMarkWrong, handleSwitchTeam, handleResetStrikes,
+  handleToggleStealMode, handleBankRound, handleResetFeud,
 }: FeudTabProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -546,14 +553,53 @@ function FeudTab({
         {/* Scoreboard */}
         <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border-2 border-white/30">
           <h2 className="text-xl font-bold text-white mb-4">Scoreboard</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className={`text-center p-4 rounded-xl ${feudState.activeTeam === 1 ? 'bg-blue-500/30 ring-2 ring-blue-400' : 'bg-white/10'}`}>
-              <p className="text-white/80 text-sm mb-1">{feudState.teamNames[0]}</p>
-              <p className="text-4xl font-bold text-white">{feudState.scores[0]}</p>
+
+          {/* Round Points */}
+          <p className="text-white/60 text-xs uppercase tracking-wide mb-2">This Round</p>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className={`text-center p-3 rounded-xl ${feudState.activeTeam === 1 ? 'bg-blue-500/30 ring-2 ring-blue-400' : 'bg-white/10'}`}>
+              <p className="text-white/70 text-xs mb-1">{feudState.teamNames[0]}</p>
+              <p className="text-3xl font-bold text-white">{feudState.roundPoints[0]}</p>
             </div>
-            <div className={`text-center p-4 rounded-xl ${feudState.activeTeam === 2 ? 'bg-orange-500/30 ring-2 ring-orange-400' : 'bg-white/10'}`}>
-              <p className="text-white/80 text-sm mb-1">{feudState.teamNames[1]}</p>
-              <p className="text-4xl font-bold text-white">{feudState.scores[1]}</p>
+            <div className={`text-center p-3 rounded-xl ${feudState.activeTeam === 2 ? 'bg-orange-500/30 ring-2 ring-orange-400' : 'bg-white/10'}`}>
+              <p className="text-white/70 text-xs mb-1">{feudState.teamNames[1]}</p>
+              <p className="text-3xl font-bold text-white">{feudState.roundPoints[1]}</p>
+            </div>
+          </div>
+
+          {/* Steal Mode + Bank Round */}
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={handleToggleStealMode}
+              className={`flex-1 py-2 rounded-lg font-bold text-sm transition-all ${
+                feudState.stealMode
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white ring-2 ring-red-300 animate-pulse'
+                  : 'bg-white/10 text-white/60 hover:bg-white/20'
+              }`}
+            >
+              {feudState.stealMode ? 'STEAL MODE ON' : 'Steal Mode'}
+            </button>
+            <button
+              onClick={handleBankRound}
+              disabled={feudState.roundPoints[0] === 0 && feudState.roundPoints[1] === 0}
+              className="flex-1 py-2 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg text-white font-bold text-sm hover:from-emerald-600 hover:to-green-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              Bank Round
+            </button>
+          </div>
+
+          {/* Total Scores */}
+          <div className="border-t border-white/20 pt-4">
+            <p className="text-white/60 text-xs uppercase tracking-wide mb-2">Total Score</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 rounded-xl bg-white/5">
+                <p className="text-white/70 text-xs mb-1">{feudState.teamNames[0]}</p>
+                <p className="text-2xl font-bold text-white">{feudState.scores[0]}</p>
+              </div>
+              <div className="text-center p-3 rounded-xl bg-white/5">
+                <p className="text-white/70 text-xs mb-1">{feudState.teamNames[1]}</p>
+                <p className="text-2xl font-bold text-white">{feudState.scores[1]}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -573,12 +619,22 @@ function FeudTab({
                     <span className={`font-bold ${isRevealed ? 'text-green-300' : 'text-white/60'}`}>{answer.points} pts</span>
                   </div>
                   {!isRevealed && (
-                    <button
-                      onClick={() => handleRevealAnswer(currentCategory.id, index)}
-                      className="px-3 py-2 bg-blue-500/30 border border-blue-400/30 rounded-lg text-blue-300 text-sm font-bold hover:bg-blue-500/50 transition-all whitespace-nowrap"
-                    >
-                      Reveal
-                    </button>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleRevealAnswer(currentCategory.id, index, true)}
+                        className="px-3 py-2 bg-green-500/30 border border-green-400/30 rounded-lg text-green-300 text-sm font-bold hover:bg-green-500/50 transition-all whitespace-nowrap"
+                        title="Reveal and award points to active team"
+                      >
+                        +Pts
+                      </button>
+                      <button
+                        onClick={() => handleRevealAnswer(currentCategory.id, index, false)}
+                        className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/60 text-sm font-bold hover:bg-white/20 transition-all whitespace-nowrap"
+                        title="Reveal without awarding points"
+                      >
+                        Show
+                      </button>
+                    </div>
                   )}
                 </div>
               );

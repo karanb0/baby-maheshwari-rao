@@ -4,6 +4,8 @@ import {
   revealAnswer,
   markWrong,
   switchTeam,
+  toggleStealMode,
+  bankRound,
   setCategory,
   setTeamNames,
   resetStrikes,
@@ -24,13 +26,19 @@ export async function POST(request: NextRequest) {
 
     switch (action) {
       case 'revealAnswer':
-        state = revealAnswer(params.categoryId, params.answerIndex);
+        state = revealAnswer(params.categoryId, params.answerIndex, params.awardPoints ?? true);
         break;
       case 'markWrong':
         state = markWrong();
         break;
       case 'switchTeam':
         state = switchTeam();
+        break;
+      case 'toggleStealMode':
+        state = toggleStealMode();
+        break;
+      case 'bankRound':
+        state = bankRound();
         break;
       case 'setCategory':
         state = setCategory(params.index);

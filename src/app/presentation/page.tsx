@@ -315,19 +315,41 @@ function FeudPresentation({ feudState }: { feudState: FeudState }) {
           ))}
         </div>
 
+        {/* Steal Mode Banner */}
+        <AnimatePresence>
+          {feudState.stealMode && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="flex justify-center my-1"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="bg-gradient-to-r from-red-600 to-pink-600 px-8 py-2 rounded-full border-2 border-red-300/50 shadow-[0_0_30px_rgba(239,68,68,0.6)]"
+              >
+                <span className="text-white font-bold text-lg md:text-xl tracking-widest uppercase">Steal!</span>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Scoreboard */}
         <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-auto">
           <div className="flex justify-center gap-6 md:gap-12">
             <div className={`text-center px-8 md:px-16 py-3 rounded-xl transition-all ${feudState.activeTeam === 1 ? 'bg-blue-600/80 ring-2 ring-blue-300 shadow-[0_0_30px_rgba(59,130,246,0.5)]' : 'bg-white/10'}`}>
               <p className="text-white/80 text-sm md:text-base font-medium">{feudState.teamNames[0]}</p>
-              <p className="text-3xl md:text-5xl font-bold text-white">{feudState.scores[0]}</p>
+              <p className="text-3xl md:text-5xl font-bold text-white">{feudState.roundPoints[0]}</p>
+              <p className="text-white/50 text-xs md:text-sm mt-1">Total: {feudState.scores[0]}</p>
             </div>
             <div className="flex items-center">
               <span className="text-2xl md:text-3xl text-white/40 font-bold">VS</span>
             </div>
             <div className={`text-center px-8 md:px-16 py-3 rounded-xl transition-all ${feudState.activeTeam === 2 ? 'bg-orange-600/80 ring-2 ring-orange-300 shadow-[0_0_30px_rgba(249,115,22,0.5)]' : 'bg-white/10'}`}>
               <p className="text-white/80 text-sm md:text-base font-medium">{feudState.teamNames[1]}</p>
-              <p className="text-3xl md:text-5xl font-bold text-white">{feudState.scores[1]}</p>
+              <p className="text-3xl md:text-5xl font-bold text-white">{feudState.roundPoints[1]}</p>
+              <p className="text-white/50 text-xs md:text-sm mt-1">Total: {feudState.scores[1]}</p>
             </div>
           </div>
         </motion.div>

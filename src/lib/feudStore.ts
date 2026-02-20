@@ -9,6 +9,8 @@ let feudState: FeudState = {
   activeTeam: 1,
   teamNames: ['Team 1', 'Team 2'],
   scores: [0, 0],
+  roundPoints: [0, 0],
+  stealMode: false,
   strikes: 0,
   revealedAnswers: {},
 };
@@ -17,12 +19,13 @@ export function getFeudState(): FeudState {
   return {
     ...feudState,
     scores: [...feudState.scores] as [number, number],
+    roundPoints: [...feudState.roundPoints] as [number, number],
     teamNames: [...feudState.teamNames] as [string, string],
     revealedAnswers: { ...feudState.revealedAnswers },
   };
 }
 
-export function revealAnswer(categoryId: string, answerIndex: number): FeudState {
+export function revealAnswer(categoryId: string, answerIndex: number, awardPoints = true): FeudState {
   const category = feudState.categories.find(c => c.id === categoryId);
   if (!category || answerIndex < 0 || answerIndex >= category.answers.length) {
     return getFeudState();
@@ -35,8 +38,19 @@ export function revealAnswer(categoryId: string, answerIndex: number): FeudState
 
   feudState.revealedAnswers[categoryId] = [...revealed, answerIndex];
 
-  const teamIdx = feudState.activeTeam - 1;
-  feudState.scores[teamIdx] += category.answers[answerIndex].points;
+  if (awardPoints) {
+    const teamIdx = feudState.activeTeam - 1;
+    const otherIdx = feudState.activeTeam === 1 ? 1 : 0;
+
+    if (feudState.stealMode) {
+      // Steal: active team takes all of the other team's round points + this answer's points
+      feudState.roundPoints[teamIdx] += feudState.roundPoints[otherIdx] + category.answers[answerIndex].points;
+      feudState.roundPoints[otherIdx] = 0;
+      feudState.stealMode = false;
+    } else {
+      feudState.roundPoints[teamIdx] += category.answers[answerIndex].points;
+    }
+  }
 
   return getFeudState();
 }
@@ -50,6 +64,20 @@ export function markWrong(): FeudState {
 
 export function switchTeam(): FeudState {
   feudState.activeTeam = feudState.activeTeam === 1 ? 2 : 1;
+  feudState.strikes = 0;
+  return getFeudState();
+}
+
+export function toggleStealMode(): FeudState {
+  feudState.stealMode = !feudState.stealMode;
+  return getFeudState();
+}
+
+export function bankRound(): FeudState {
+  feudState.scores[0] += feudState.roundPoints[0];
+  feudState.scores[1] += feudState.roundPoints[1];
+  feudState.roundPoints = [0, 0];
+  feudState.stealMode = false;
   feudState.strikes = 0;
   return getFeudState();
 }
@@ -77,6 +105,8 @@ export function resetFeud(): FeudState {
     activeTeam: 1,
     teamNames: feudState.teamNames,
     scores: [0, 0],
+    roundPoints: [0, 0],
+    stealMode: false,
     strikes: 0,
     revealedAnswers: {},
   };

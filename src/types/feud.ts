@@ -15,6 +15,8 @@ export interface FeudState {
   activeTeam: 1 | 2;
   teamNames: [string, string];
   scores: [number, number];
+  roundPoints: [number, number];
+  stealMode: boolean;
   strikes: number;
   revealedAnswers: Record<string, number[]>;
 }
