@@ -97,6 +97,20 @@
         { "text": "Costa Rica", "points": 5 },
         { "text": "South Africa / Cape Town", "points": 3 }
       ]
+    },
+    {
+      "id": "putting-baby-to-sleep",
+      "title": "Top ways people try to put a baby to sleep",
+      "answers": [
+        { "text": "Rocking / Swaying", "points": 40 },
+        { "text": "Feeding / Nursing", "points": 30 },
+        { "text": "Singing / Lullaby", "points": 25 },
+        { "text": "White Noise / Shushing", "points": 20 },
+        { "text": "Swaddling", "points": 15 },
+        { "text": "Driving in the Car", "points": 10 },
+        { "text": "Pacifier", "points": 5 },
+        { "text": "Stroller Walk", "points": 3 }
+      ]
     }
   ]
 }
