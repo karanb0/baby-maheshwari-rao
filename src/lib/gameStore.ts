@@ -36,19 +36,19 @@ export function setParentNames(momName: string, dadName: string): GameState {
   return getGameState();
 }
 
-export function addVote(visitorId: string, questionId: string, choice: 'mom' | 'dad'): GameState {
+export function addVote(visitorId: string, questionIndex: number, choice: 'mom' | 'dad'): GameState {
   // Remove previous vote from this visitor for this question
   gameState.votes = gameState.votes.filter(
-    v => !(v.visitorId === visitorId && v.questionId === questionId)
+    v => !(v.visitorId === visitorId && v.questionIndex === questionIndex)
   );
   
   // Add new vote
-  gameState.votes.push({ visitorId, questionId, choice });
+  gameState.votes.push({ visitorId, questionIndex, choice });
   return getGameState();
 }
 
-export function getVotesForQuestion(questionId: string): VoteTally {
-  const questionVotes = gameState.votes.filter(v => v.questionId === questionId);
+export function getVotesForQuestion(questionIndex: number): VoteTally {
+  const questionVotes = gameState.votes.filter(v => v.questionIndex === questionIndex);
   const momVotes = questionVotes.filter(v => v.choice === 'mom').length;
   const dadVotes = questionVotes.filter(v => v.choice === 'dad').length;
   const total = momVotes + dadVotes;

@@ -41,8 +41,7 @@ export default function PresentationPage() {
   const fetchVotes = useCallback(async () => {
     if (!gameState || !gameState.questions[gameState.currentQuestionIndex]) return;
     try {
-      const questionId = gameState.questions[gameState.currentQuestionIndex].id;
-      const res = await fetch(`/api/game?action=votes&questionId=${questionId}`);
+      const res = await fetch(`/api/game?action=votes&questionIndex=${gameState.currentQuestionIndex}`);
       const data = await res.json();
       setVoteTally(data);
     } catch (e) { console.error(e); }
@@ -161,7 +160,7 @@ export default function PresentationPage() {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentQuestion.id}
+            key={gameState.currentQuestionIndex}
             initial={{ scale: 0.8, opacity: 0, rotateY: -90 }}
             animate={{ scale: 1, opacity: 1, rotateY: 0 }}
             exit={{ scale: 0.8, opacity: 0, rotateY: 90 }}
@@ -169,7 +168,7 @@ export default function PresentationPage() {
             className="bg-white/25 backdrop-blur-md rounded-2xl p-6 md:p-8 border-2 border-white/40 shadow-xl max-w-3xl w-full"
           >
             <motion.p className="text-2xl md:text-4xl text-white font-bold text-center leading-snug" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-              {currentQuestion.text}
+              {currentQuestion}
             </motion.p>
           </motion.div>
         </AnimatePresence>

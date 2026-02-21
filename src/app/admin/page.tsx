@@ -100,8 +100,7 @@ export default function AdminPage() {
   const fetchVotes = useCallback(async () => {
     if (!gameState || !gameState.questions[gameState.currentQuestionIndex]) return;
     try {
-      const questionId = gameState.questions[gameState.currentQuestionIndex].id;
-      const res = await fetch(`/api/game?action=votes&questionId=${questionId}`);
+      const res = await fetch(`/api/game?action=votes&questionIndex=${gameState.currentQuestionIndex}`);
       const data = await res.json();
       setVoteTally(data);
     } catch (e) { console.error(e); }
@@ -192,9 +191,8 @@ export default function AdminPage() {
   const handleResetGame = () => { if (confirm('Reset entire shoe game?')) updateGame('resetGame', {}); };
   const handleAddVote = (choice: 'mom' | 'dad') => {
     if (!gameState) return;
-    const questionId = gameState.questions[gameState.currentQuestionIndex].id;
     const visitorId = `admin-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-    updateGame('vote', { visitorId, questionId, choice });
+    updateGame('vote', { visitorId, questionIndex: gameState.currentQuestionIndex, choice });
   };
 
   // ── Feud handlers ──
@@ -477,7 +475,7 @@ function ShoeGameTab({
           <h2 className="text-xl font-bold text-white mb-4">Questions</h2>
           <div className="bg-white/10 rounded-xl p-4 mb-4">
             <p className="text-sm text-white/60 mb-1">Current Question ({gameState.currentQuestionIndex + 1}/{gameState.questions.length})</p>
-            <p className="text-lg text-white font-medium">{currentQuestion?.text}</p>
+            <p className="text-lg text-white font-medium">{currentQuestion}</p>
           </div>
           <div className="flex gap-2 mb-4">
             <button onClick={() => handleSetQuestion(gameState.currentQuestionIndex - 1)} disabled={gameState.currentQuestionIndex === 0}
@@ -491,9 +489,9 @@ function ShoeGameTab({
           </div>
           <div className="max-h-48 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-white/30">
             {gameState.questions.map((q, index) => (
-              <button key={q.id} onClick={() => handleSetQuestion(index)}
+              <button key={index} onClick={() => handleSetQuestion(index)}
                 className={`w-full text-left p-3 rounded-lg transition-all ${index === gameState.currentQuestionIndex ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white' : 'bg-white/10 text-white/80 hover:bg-white/20'}`}>
-                <span className="font-bold mr-2">{index + 1}.</span>{q.text}
+                <span className="font-bold mr-2">{index + 1}.</span>{q}
               </button>
             ))}
           </div>

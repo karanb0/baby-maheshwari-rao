@@ -1,18 +1,13 @@
-export interface Question {
-  id: string;
-  text: string;
-}
-
 export interface Vote {
-visitorId: string;
-  questionId: string;
+  visitorId: string;
+  questionIndex: number;
   choice: 'mom' | 'dad';
 }
 
 export interface GameState {
   currentQuestionIndex: number;
   showQRCode: boolean;
-  questions: Question[];
+  questions: string[];
   votes: Vote[];
   isGameActive: boolean;
   momName: string;
@@ -27,15 +22,17 @@ export interface VoteTally {
   dadPercentage: number;
 }
 
-export const DEFAULT_QUESTIONS: Question[] = [
-  { id: '1', text: 'Who will be the first to change a diaper?' },
-  { id: '2', text: 'Who will be the stricter parent?' },
-  { id: '3', text: 'Who will spoil the baby more?' },
-  { id: '4', text: 'Who will be better at getting the baby to sleep?' },
-  { id: '5', text: 'Who will cry more on the first day of school?' },
-  { id: '6', text: 'Who will be more protective?' },
-  { id: '7', text: 'Who will teach the baby to say their first word?' },
-  { id: '8', text: 'Who will be the fun parent?' },
-  { id: '9', text: 'Who will give in to puppy dog eyes first?' },
-  { id: '10', text: 'Who will tell the baby the most bedtime stories?' },
+export const DEFAULT_QUESTIONS: string[] = [
+  'Who will be the first to change a diaper?',
+  'Who will be the stricter parent?',
+  'Who will baby get the most kisses from?',
+  'Who will panic more?',
+  'Who will will get more sleep in the first 10 days?',
+  'Who will be better at getting the baby to sleep?',
+  'Who is more likely to end up playing with baby toys themselves?',
+  'Who will be ready to go on a date night without the baby first?',
+  'Who will cry more on the first day of daycare?',
+  'Who will teach the baby to say their first word?',
+  'Who will tell the baby the most bedtime stories?',
+  'Who will love the baby the most?'
 ];

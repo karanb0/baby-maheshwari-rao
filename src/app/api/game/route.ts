@@ -14,10 +14,10 @@ import {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const action = searchParams.get('action');
-  const questionId = searchParams.get('questionId');
+  const questionIndex = searchParams.get('questionIndex');
 
-  if (action === 'votes' && questionId) {
-    const tally = getVotesForQuestion(questionId);
+  if (action === 'votes' && questionIndex != null) {
+    const tally = getVotesForQuestion(Number(questionIndex));
     return NextResponse.json(tally);
   }
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         state = setParentNames(params.momName, params.dadName);
         break;
       case 'vote':
-        state = addVote(params.visitorId, params.questionId, params.choice);
+        state = addVote(params.visitorId, params.questionIndex, params.choice);
         break;
       case 'resetVotes':
         state = resetVotes();

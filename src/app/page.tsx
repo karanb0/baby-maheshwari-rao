@@ -11,7 +11,7 @@ export default function GuestPage() {
   const [visitorId, setVisitorId] = useState('');
   const [currentVote, setCurrentVote] = useState<'mom' | 'dad' | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
-  const [lastQuestionId, setLastQuestionId] = useState<string | null>(null);
+  const [lastQuestionIndex, setLastQuestionIndex] = useState<number | null>(null);
 
   // Generate or retrieve visitor ID
   useEffect(() => {
@@ -31,11 +31,11 @@ export default function GuestPage() {
       setGameState(data);
       
       // Reset vote status when question changes
-      const currentQuestionId = data.questions[data.currentQuestionIndex]?.id;
-      if (currentQuestionId !== lastQuestionId) {
+      const currentIdx = data.currentQuestionIndex;
+      if (currentIdx !== lastQuestionIndex) {
         setCurrentVote(null);
         setHasVoted(false);
-        setLastQuestionId(currentQuestionId);
+        setLastQuestionIndex(currentIdx);
       }
     } catch (error) {
       console.error('Failed to fetch game state:', error);
@@ -50,20 +50,18 @@ export default function GuestPage() {
 
   // Update last question ID tracking
   useEffect(() => {
-    if (gameState && lastQuestionId !== null) {
-      const currentQuestionId = gameState.questions[gameState.currentQuestionIndex]?.id;
-      if (currentQuestionId !== lastQuestionId) {
+    if (gameState && lastQuestionIndex !== null) {
+      const currentIdx = gameState.currentQuestionIndex;
+      if (currentIdx !== lastQuestionIndex) {
         setCurrentVote(null);
         setHasVoted(false);
-        setLastQuestionId(currentQuestionId);
+        setLastQuestionIndex(currentIdx);
       }
     }
   }, [gameState?.currentQuestionIndex]);
 
   const handleVote = async (choice: 'mom' | 'dad') => {
     if (!gameState || !visitorId) return;
-    
-    const questionId = gameState.questions[gameState.currentQuestionIndex].id;
     
     try {
       await fetch('/api/game', {
@@ -72,7 +70,7 @@ export default function GuestPage() {
         body: JSON.stringify({
           action: 'vote',
           visitorId,
-          questionId,
+          questionIndex: gameState.currentQuestionIndex,
           choice,
         }),
       });
@@ -158,7 +156,7 @@ export default function GuestPage() {
         {/* Question Card */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentQuestion.id}
+            key={gameState.currentQuestionIndex}
             initial={{ scale: 0.8, opacity: 0, rotateY: -90 }}
             animate={{ scale: 1, opacity: 1, rotateY: 0 }}
             exit={{ scale: 0.8, opacity: 0, rotateY: 90 }}
@@ -171,7 +169,7 @@ export default function GuestPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              {currentQuestion.text}
+              {currentQuestion}
             </motion.p>
           </motion.div>
         </AnimatePresence>
