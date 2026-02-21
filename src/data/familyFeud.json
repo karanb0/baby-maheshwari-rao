@@ -83,6 +83,20 @@
         { "text": "Physical Play", "points": 5 },
         { "text": "Talk / Narrate", "points": 3 }
       ]
+    },
+    {
+      "id": "baby-travel-destinations",
+      "title": "Best places to visit with a baby under 1",
+      "answers": [
+        { "text": "Japan", "points": 40 },
+        { "text": "Portugal / Lisbon", "points": 30 },
+        { "text": "Bali / Indonesia", "points": 25 },
+        { "text": "Thailand", "points": 20 },
+        { "text": "New Zealand", "points": 15 },
+        { "text": "Australia", "points": 10 },
+        { "text": "Costa Rica", "points": 5 },
+        { "text": "South Africa / Cape Town", "points": 3 }
+      ]
     }
   ]
 }
