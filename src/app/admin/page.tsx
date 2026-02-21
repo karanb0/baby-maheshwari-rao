@@ -13,6 +13,10 @@ import Link from 'next/link';
 type Tab = 'shoe' | 'feud' | 'price';
 
 export default function AdminPage() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+
   const [activeTab, setActiveTab] = useState<Tab>('shoe');
   const [activeGame, setActiveGame] = useState<ActiveGame>('shoe');
 
@@ -34,8 +38,32 @@ export default function AdminPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setGuestUrl(window.location.origin);
+      if (sessionStorage.getItem('admin-auth') === 'true') {
+        setAuthenticated(true);
+      }
     }
   }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/admin-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput }),
+      });
+      const data = await res.json();
+      if (data.authenticated) {
+        setAuthenticated(true);
+        setPasswordError(false);
+        sessionStorage.setItem('admin-auth', 'true');
+      } else {
+        setPasswordError(true);
+      }
+    } catch {
+      setPasswordError(true);
+    }
+  };
 
   // ── Active game ──
   const fetchActiveGame = useCallback(async () => {
@@ -181,6 +209,43 @@ export default function AdminPage() {
   const handleToggleStealMode = () => updateFeud('toggleStealMode');
   const handleBankRound = () => updateFeud('bankRound');
   const handleResetFeud = () => { if (confirm('Reset Family Feud?')) updateFeud('resetFeud'); };
+
+  // ── Password gate ──
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <SeaBackground />
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="relative z-10 bg-white/20 backdrop-blur-md rounded-2xl p-8 border-2 border-white/30 w-full max-w-sm"
+        >
+          <h1 className="text-2xl font-bold text-white text-center mb-6">Admin Access</h1>
+          <form onSubmit={handleLogin}>
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
+              placeholder="Enter password"
+              autoFocus
+              className={`w-full px-4 py-3 rounded-lg bg-white/20 border text-white placeholder-white/50 focus:outline-none focus:ring-2 transition-all ${
+                passwordError ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-blue-400'
+              }`}
+            />
+            {passwordError && (
+              <p className="text-red-300 text-sm mt-2">Incorrect password</p>
+            )}
+            <button
+              type="submit"
+              className="w-full mt-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg text-white font-bold hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg"
+            >
+              Enter
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   // ── Loading ──
   if (!gameState || !feudState) {
