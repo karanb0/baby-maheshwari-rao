@@ -10,7 +10,7 @@ import { FeudState } from '@/types/feud';
 import { ActiveGame } from '@/lib/activeGameStore';
 import Link from 'next/link';
 
-type Tab = 'shoe' | 'feud';
+type Tab = 'shoe' | 'feud' | 'price';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>('shoe');
@@ -27,6 +27,9 @@ export default function AdminPage() {
   const [feudState, setFeudState] = useState<FeudState | null>(null);
   const [teamName1, setTeamName1] = useState('Team 1');
   const [teamName2, setTeamName2] = useState('Team 2');
+
+  // Price is Right state
+  const [showPrices, setShowPrices] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -111,18 +114,41 @@ export default function AdminPage() {
     } catch (e) { console.error(e); }
   };
 
+  // ── Price is Right ──
+  const fetchShowPrices = useCallback(async () => {
+    try {
+      const res = await fetch('/api/price-is-right');
+      const data = await res.json();
+      setShowPrices(data.showPrices);
+    } catch (e) { console.error(e); }
+  }, []);
+
+  const handleTogglePrices = async (show: boolean) => {
+    try {
+      const res = await fetch('/api/price-is-right', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ showPrices: show }),
+      });
+      const data = await res.json();
+      setShowPrices(data.showPrices);
+    } catch (e) { console.error(e); }
+  };
+
   // ── Polling ──
   useEffect(() => {
     fetchActiveGame();
     fetchGameState();
     fetchFeudState();
+    fetchShowPrices();
     const interval = setInterval(() => {
       fetchActiveGame();
       fetchGameState();
       fetchFeudState();
+      fetchShowPrices();
     }, 2000);
     return () => clearInterval(interval);
-  }, [fetchActiveGame, fetchGameState, fetchFeudState]);
+  }, [fetchActiveGame, fetchGameState, fetchFeudState, fetchShowPrices]);
 
   useEffect(() => {
     fetchVotes();
@@ -242,6 +268,16 @@ export default function AdminPage() {
           >
             Family Feud
           </button>
+          <button
+            onClick={() => setActiveTab('price')}
+            className={`px-6 py-3 rounded-t-xl font-bold text-lg transition-all ${
+              activeTab === 'price'
+                ? 'bg-white/25 backdrop-blur-md text-white border-2 border-b-0 border-white/30'
+                : 'bg-white/10 text-white/50 hover:bg-white/15 border-2 border-transparent'
+            }`}
+          >
+            Price is Right
+          </button>
         </div>
 
         <AnimatePresence mode="wait">
@@ -263,7 +299,7 @@ export default function AdminPage() {
                 handleAddVote={handleAddVote}
               />
             </motion.div>
-          ) : (
+          ) : activeTab === 'feud' ? (
             <motion.div key="feud" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
               <FeudTab
                 feudState={feudState}
@@ -283,6 +319,10 @@ export default function AdminPage() {
                 handleBankRound={handleBankRound}
                 handleResetFeud={handleResetFeud}
               />
+            </motion.div>
+          ) : (
+            <motion.div key="price" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <PriceIsRightTab showPrices={showPrices} handleTogglePrices={handleTogglePrices} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -640,6 +680,48 @@ function FeudTab({
               );
             })}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   Price is Right Tab
+   ═══════════════════════════════════════════ */
+
+interface PriceIsRightTabProps {
+  showPrices: boolean;
+  handleTogglePrices: (show: boolean) => void;
+}
+
+function PriceIsRightTab({ showPrices, handleTogglePrices }: PriceIsRightTabProps) {
+  return (
+    <div className="max-w-lg">
+      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border-2 border-white/30">
+        <h2 className="text-xl font-bold text-white mb-4">Price Display</h2>
+        <p className="text-white/60 text-sm mb-4">Toggle whether prices are visible on the Price is Right page.</p>
+        <div className="flex gap-4">
+          <button
+            onClick={() => handleTogglePrices(true)}
+            className={`flex-1 py-3 rounded-lg font-bold transition-all ${
+              showPrices
+                ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-lg'
+                : 'bg-white/20 text-white/60 hover:bg-white/30'
+            }`}
+          >
+            Show Prices
+          </button>
+          <button
+            onClick={() => handleTogglePrices(false)}
+            className={`flex-1 py-3 rounded-lg font-bold transition-all ${
+              !showPrices
+                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+                : 'bg-white/20 text-white/60 hover:bg-white/30'
+            }`}
+          >
+            Hide Prices
+          </button>
         </div>
       </div>
     </div>
